@@ -64,6 +64,20 @@
 > 不蒜子会自动扫描页面上所有带 `busuanzi_*` ID 的元素并填充计数。
 > 你无需写任何 JavaScript，只需要 HTML 标签。
 
+### 统计徽章
+
+在网页底部添加不蒜子统计图标，访客点击后可查看完整统计信息：
+
+```html
+<a href="https://bsz.oopss.top/count?search=你的域名" title="不蒜子统计" target="_blank">
+  <img src="https://bsz.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;">
+</a>
+```
+
+效果：<a href="https://bsz.oopss.top/count?search=bsz.oopss.top" target="_blank"><img src="https://bsz.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;vertical-align:middle;"></a>
+
+统计页面示例：[https://bsz.oopss.top/count?search=bsz.oopss.top](https://bsz.oopss.top/count?search=bsz.oopss.top)
+
 ## 🛠️ 自行部署
 
 ### 前置条件
@@ -138,6 +152,7 @@ busuanzi-worker/
 ├── src/
 │   ├── index.js        # Worker 主入口，路由 + API 处理
 │   ├── homepage.js     # 首页 HTML
+│   ├── countpage.js    # 站点统计信息页
 │   └── client.js       # 客户端 JavaScript（源码，未压缩）
 ├── wrangler.toml       # Cloudflare Workers 配置
 ├── package.json
