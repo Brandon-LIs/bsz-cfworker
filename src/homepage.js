@@ -213,6 +213,11 @@ npx wrangler deploy</pre>
       &middot;
       <a href="https://github.com/Brandon-LIs/bsz-cfworker">GitHub</a>
     </p>
+    <div style="margin-top:16px;">
+      <a href="https://bsz.oopss.top/count?search=bsz.oopss.top" target="_blank">
+        <img src="https://bsz.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;">
+      </a>
+    </div>
   </footer>
 </div>
 
