@@ -3,6 +3,8 @@ import countPage from './countpage.js'
 
 const CLIENT_JS = `(()=>{if(window.busuanziRequestSent)return;window.busuanziRequestSent=true;const u=new URL(document.currentScript.src);fetch(u.protocol+'//'+u.host+'/api',{method:'POST',body:JSON.stringify({url:location.href,referrer:document.referrer})}).then(r=>r.json()).then(r=>{for(const k in r)document.querySelectorAll('#'+k).forEach(e=>e.innerText=r[k])}).catch(e=>console.error('busuanzi error:',e))})();`
 
+const DOMAIN_ALIASES = { 'ac.oopss.top': 'bsz.oopss.top' }
+
 function today() {
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
@@ -90,7 +92,7 @@ async function handleApi(request, env, ctx) {
     let page
     try { page = new URL(pageUrl) } catch { return json({ error: 'Invalid url' }, 400) }
 
-    const host = page.hostname.replace(/^www\./, '')
+    const host = DOMAIN_ALIASES[page.hostname.replace(/^www\./, '')] || page.hostname.replace(/^www\./, '')
     const pagePath = page.pathname + page.search || '/'
     const vid = visitorId(request)
     const kv = env.BUSUANZI
@@ -157,7 +159,7 @@ async function handleCount(request, env) {
     return new Response('Missing search parameter', { status: 400 })
   }
 
-  const normalized = domain.replace(/^www\./, '')
+  const normalized = DOMAIN_ALIASES[domain.replace(/^www\./, '')] || domain.replace(/^www\./, '')
   const kv = env.BUSUANZI
   const now = today()
 

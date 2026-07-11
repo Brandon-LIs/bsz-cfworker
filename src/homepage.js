@@ -132,7 +132,7 @@ const HOMEPAGE_HTML = `<!DOCTYPE html>
     <h2>快速开始</h2>
     <h3>1. 引入脚本</h3>
     <p>在网站 <code>&lt;head&gt;</code> 或 <code>&lt;body&gt;</code> 末尾添加：</p>
-    <pre><span class="tag">&lt;script </span><span class="attr">src=</span><span class="str">"https://bsz.oopss.top/busuanzi.min.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+    <pre><span class="tag">&lt;script </span><span class="attr">src=</span><span class="str">"https://ac.oopss.top/busuanzi.min.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
     <h3>2. 放置标签</h3>
     <p>在需要显示计数的地方放置以下任意 span：</p>
     <pre><span class="cmt">&lt;!-- 站点统计 --&gt;</span>
@@ -148,10 +148,10 @@ const HOMEPAGE_HTML = `<!DOCTYPE html>
 今日总访客数 <span class="tag">&lt;span</span> <span class="attr">id=</span><span class="str">"busuanzi_today_uv"</span><span class="tag">&gt;</span>加载中...<span class="tag">&lt;/span&gt;</span> 人</pre>
     <h3>3. (可选) 添加统计徽章</h3>
     <p>在网页底部显示不蒜子统计图标，访客点击后可查看该站完整统计信息：</p>
-    <pre><span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"https://bsz.oopss.top/count?search=你的域名"</span> <span class="attr">title=</span><span class="str">"不蒜子统计"</span> <span class="attr">target=</span><span class="str">"_blank"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;img</span> <span class="attr">src=</span><span class="str">"https://bsz.oopss.top/badge"</span> <span class="attr">alt=</span><span class="str">"不蒜子统计"</span> <span class="attr">style=</span><span class="str">"width:85px;height:20px;border:0;"</span><span class="tag">&gt;</span>
+    <pre><span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"https://ac.oopss.top/count?search=你的域名"</span> <span class="attr">title=</span><span class="str">"不蒜子统计"</span> <span class="attr">target=</span><span class="str">"_blank"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src=</span><span class="str">"https://ac.oopss.top/badge"</span> <span class="attr">alt=</span><span class="str">"不蒜子统计"</span> <span class="attr">style=</span><span class="str">"width:85px;height:20px;border:0;"</span><span class="tag">&gt;</span>
 <span class="tag">&lt;/a&gt;</span></pre>
-    <p>效果：<a href="https://bsz.oopss.top/count?search=bsz.oopss.top" target="_blank"><img src="https://bsz.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;vertical-align:middle;"></a></p>
+    <p>效果：<a href="https://ac.oopss.top/count?search=ac.oopss.top" target="_blank"><img src="https://ac.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;vertical-align:middle;"></a></p>
     <h3>4. 完成 &#x2705;</h3>
     <p>刷新页面即可看到计数。无需注册、无需配置数据库、无需维护服务器。</p>
   </section>
@@ -215,13 +215,13 @@ npx wrangler deploy</pre>
   <footer>
     <p>&#x1F9C4; 不蒜子 &middot; 基于 Cloudflare Workers 构建</p>
     <p>
-      <a href="https://bsz.oopss.top/count?search=bsz.oopss.top">站点统计</a>
+      <a href="https://ac.oopss.top/count?search=ac.oopss.top">站点统计</a>
       &middot;
       <a href="https://github.com/Brandon-LIs/bsz-cfworker">GitHub</a>
     </p>
     <div style="margin-top:16px;">
-      <a href="https://bsz.oopss.top/count?search=bsz.oopss.top" target="_blank">
-        <img src="https://bsz.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;">
+      <a href="https://ac.oopss.top/count?search=ac.oopss.top" target="_blank">
+        <img src="https://ac.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;">
       </a>
     </div>
   </footer>

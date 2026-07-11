@@ -50,7 +50,7 @@
 在你的网页中引入脚本和标签即可：
 
 ```html
-<script src="https://bsz.oopss.top/busuanzi.min.js" defer></script>
+<script src="https://ac.oopss.top/busuanzi.min.js" defer></script>
 
 本站总访问量 <span id="busuanzi_site_pv">加载中...</span> 次
 本站总访客数 <span id="busuanzi_site_uv">加载中...</span> 人
@@ -69,14 +69,14 @@
 在网页底部添加不蒜子统计图标，访客点击后可查看完整统计信息：
 
 ```html
-<a href="https://bsz.oopss.top/count?search=你的域名" title="不蒜子统计" target="_blank">
-  <img src="https://bsz.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;">
+<a href="https://ac.oopss.top/count?search=你的域名" title="不蒜子统计" target="_blank">
+  <img src="https://ac.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;">
 </a>
 ```
 
-效果：<a href="https://bsz.oopss.top/count?search=bsz.oopss.top" target="_blank"><img src="https://bsz.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;vertical-align:middle;"></a>
+效果：<a href="https://ac.oopss.top/count?search=ac.oopss.top" target="_blank"><img src="https://ac.oopss.top/badge" alt="不蒜子统计" style="width:85px;height:20px;border:0;vertical-align:middle;"></a>
 
-统计页面示例：[https://bsz.oopss.top/count?search=bsz.oopss.top](https://bsz.oopss.top/count?search=bsz.oopss.top)
+统计页面示例：[https://ac.oopss.top/count?search=ac.oopss.top](https://ac.oopss.top/count?search=ac.oopss.top)
 
 ## 🛠️ 自行部署
 

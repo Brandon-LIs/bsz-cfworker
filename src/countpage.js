@@ -104,8 +104,8 @@ function countPage(domain, stats) {
   <div class="card">
     <h2>图标代码</h2>
     <p style="color:var(--muted);font-size:0.9rem;margin-bottom:12px;">将以下代码添加到你的网页中，显示不蒜子统计图标：</p>
-    <pre><span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"https://bsz.oopss.top/count?search=${domain}"</span> <span class="attr">title=</span><span class="str">"不蒜子统计"</span> <span class="attr">target=</span><span class="str">"_blank"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;img</span> <span class="attr">style=</span><span class="str">"width:85px;height:25px;"</span> <span class="attr">src=</span><span class="str">"https://bsz.oopss.top/badge"</span><span class="tag">&gt;</span>
+    <pre><span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"https://ac.oopss.top/count?search=${domain}"</span> <span class="attr">title=</span><span class="str">"不蒜子统计"</span> <span class="attr">target=</span><span class="str">"_blank"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;img</span> <span class="attr">style=</span><span class="str">"width:85px;height:25px;"</span> <span class="attr">src=</span><span class="str">"https://ac.oopss.top/badge"</span><span class="tag">&gt;</span>
 <span class="tag">&lt;/a&gt;</span></pre>
     <div class="badge-preview">
       <a class="badge" href="/count?search=${domain}" target="_blank">
