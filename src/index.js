@@ -35,7 +35,7 @@ function json(data, status = 200) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url)
     const path = url.pathname
     const method = request.method
@@ -57,7 +57,7 @@ export default {
 
     // API: /api or /api.php (busuanzi v3 compatible)
     if (method === 'POST' && (path === '/api' || path === '/api.php')) {
-      return handleApi(request, env)
+      return handleApi(request, env, ctx)
     }
 
     // Homepage
@@ -81,101 +81,70 @@ export default {
   },
 }
 
-async function handleApi(request, env) {
+async function handleApi(request, env, ctx) {
   try {
     const body = await request.json()
     const pageUrl = body.url || ''
-    if (!pageUrl) {
-      return json({ error: 'Missing url' }, 400)
-    }
+    if (!pageUrl) return json({ error: 'Missing url' }, 400)
 
     let page
-    try {
-      page = new URL(pageUrl)
-    } catch {
-      return json({ error: 'Invalid url' }, 400)
-    }
+    try { page = new URL(pageUrl) } catch { return json({ error: 'Invalid url' }, 400) }
 
     const host = page.hostname
     const pagePath = page.pathname + page.search || '/'
     const vid = visitorId(request)
     const kv = env.BUSUANZI
-
     const now = today()
-    const keys = {
-      sitePv: `spv:${host}`,
-      siteUv: `suv:${host}`,
-      pagePv: `ppv:${host}:${pagePath}`,
-      pageUv: `puv:${host}:${pagePath}`,
-      todayPv: `tpv:${host}:${now}`,
-      todayUv: `tuv:${host}:${now}`,
-      uvSite: `uvs:${host}:${vid}`,
-      uvPage: `uvp:${host}:${pagePath}:${vid}`,
-      uvToday: `uvt:${host}:${now}:${vid}`,
+
+    const k = {
+      site: `s:${host}`,
+      page: `p:${host}:${pagePath}`,
+      today: `t:${host}:${now}`,
+      uvs: `uvs:${host}:${vid}`,
+      uvp: `uvp:${host}:${pagePath}:${vid}`,
+      uvt: `uvt:${host}:${now}:${vid}`,
       meta: `meta:${host}`,
     }
 
-    const [
-      sitePvRaw, siteUvRaw,
-      pagePvRaw, pageUvRaw,
-      todayPvRaw, todayUvRaw,
-      uvSiteRaw, uvPageRaw, uvTodayRaw,
-      metaRaw,
-    ] = await Promise.all([
-      kv.get(keys.sitePv),
-      kv.get(keys.siteUv),
-      kv.get(keys.pagePv),
-      kv.get(keys.pageUv),
-      kv.get(keys.todayPv),
-      kv.get(keys.todayUv),
-      kv.get(keys.uvSite),
-      kv.get(keys.uvPage),
-      kv.get(keys.uvToday),
+    const [sRaw, pRaw, tRaw, uvsRaw, uvpRaw, uvtRaw, metaRaw] = await Promise.all([
+      kv.get(k.site), kv.get(k.page), kv.get(k.today),
+      kv.get(k.uvs), kv.get(k.uvp), kv.get(k.uvt), kv.get(k.meta),
     ])
 
-    let sitePv = Number(sitePvRaw) || 0
-    let siteUv = Number(siteUvRaw) || 0
-    let pagePv = Number(pagePvRaw) || 0
-    let pageUv = Number(pageUvRaw) || 0
-    let todayPv = Number(todayPvRaw) || 0
-    let todayUv = Number(todayUvRaw) || 0
+    let s = sRaw ? JSON.parse(sRaw) : { pv: 0, uv: 0 }
+    let p = pRaw ? JSON.parse(pRaw) : { pv: 0, uv: 0 }
+    let td = tRaw ? JSON.parse(tRaw) : { pv: 0, uv: 0 }
 
-    sitePv++
-    pagePv++
-    todayPv++
+    s.pv++; p.pv++; td.pv++
 
-    const isNewSite = uvSiteRaw === null
-    const isNewPage = uvPageRaw === null
-    const isNewToday = uvTodayRaw === null
+    if (uvsRaw === null) { s.uv++ }
+    if (uvpRaw === null) { p.uv++ }
+    if (uvtRaw === null) { td.uv++ }
 
-    if (isNewSite) siteUv++
-    if (isNewPage) pageUv++
-    if (isNewToday) todayUv++
+    const res = {
+      busuanzi_site_pv: s.pv,
+      busuanzi_site_uv: s.uv,
+      busuanzi_page_pv: p.pv,
+      busuanzi_page_uv: p.uv,
+      busuanzi_today_pv: td.pv,
+      busuanzi_today_uv: td.uv,
+    }
 
-    const writes = [
-      kv.put(keys.sitePv, String(sitePv)),
-      kv.put(keys.siteUv, String(siteUv)),
-      kv.put(keys.pagePv, String(pagePv)),
-      kv.put(keys.pageUv, String(pageUv)),
-      kv.put(keys.todayPv, String(todayPv)),
-      kv.put(keys.todayUv, String(todayUv)),
-    ]
+    // Write asynchronously — return response immediately
+    ctx.waitUntil((async () => {
+      const writes = [
+        kv.put(k.site, JSON.stringify(s)),
+        kv.put(k.page, JSON.stringify(p)),
+        kv.put(k.today, JSON.stringify(td)),
+      ]
+      if (uvsRaw === null) writes.push(kv.put(k.uvs, '1'))
+      if (uvpRaw === null) writes.push(kv.put(k.uvp, '1'))
+      if (uvtRaw === null) writes.push(kv.put(k.uvt, '1', { expirationTtl: 172800 }))
+      if (metaRaw === null) writes.push(kv.put(k.meta, JSON.stringify({ createdAt: new Date().toISOString() })))
+      await Promise.all(writes)
+    })())
 
-    if (isNewSite) writes.push(kv.put(keys.uvSite, '1'))
-    if (isNewPage) writes.push(kv.put(keys.uvPage, '1'))
-    if (isNewToday) writes.push(kv.put(keys.uvToday, '1', { expirationTtl: 172800 }))
-    if (metaRaw === null) writes.push(kv.put(keys.meta, JSON.stringify({ createdAt: new Date().toISOString() })))
-
-    await Promise.all(writes)
-
-    return json({
-      busuanzi_site_pv: sitePv,
-      busuanzi_site_uv: siteUv,
-      busuanzi_page_pv: pagePv,
-      busuanzi_page_uv: pageUv,
-      busuanzi_today_pv: todayPv,
-      busuanzi_today_uv: todayUv,
-    })
+    return json(res)
   } catch (e) {
     return json({ error: 'Internal error' }, 500)
   }
@@ -191,13 +160,14 @@ async function handleCount(request, env) {
   const kv = env.BUSUANZI
   const now = today()
 
-  const [sitePvRaw, siteUvRaw, todayPvRaw, todayUvRaw, metaRaw] = await Promise.all([
-    kv.get(`spv:${domain}`),
-    kv.get(`suv:${domain}`),
-    kv.get(`tpv:${domain}:${now}`),
-    kv.get(`tuv:${domain}:${now}`),
+  const [sRaw, tRaw, metaRaw] = await Promise.all([
+    kv.get(`s:${domain}`),
+    kv.get(`t:${domain}:${now}`),
     kv.get(`meta:${domain}`),
   ])
+
+  let s = sRaw ? JSON.parse(sRaw) : { pv: 0, uv: 0 }
+  let td = tRaw ? JSON.parse(tRaw) : { pv: 0, uv: 0 }
 
   let meta = { createdAt: null }
   try { if (metaRaw) meta = JSON.parse(metaRaw) } catch {}
@@ -208,11 +178,11 @@ async function handleCount(request, env) {
   }
 
   const html = countPage(domain, {
-    sitePv: Number(sitePvRaw) || 0,
-    siteUv: Number(siteUvRaw) || 0,
-    todayPv: Number(todayPvRaw) || 0,
-    todayUv: Number(todayUvRaw) || 0,
-    createdAt: meta.createdAt === '-' ? '-' : new Date(meta.createdAt).toLocaleString('zh-CN'),
+    sitePv: s.pv,
+    siteUv: s.uv,
+    todayPv: td.pv,
+    todayUv: td.uv,
+    createdAt: new Date(meta.createdAt).toLocaleString('zh-CN'),
   })
 
   return new Response(html, {
