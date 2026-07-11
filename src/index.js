@@ -90,7 +90,7 @@ async function handleApi(request, env, ctx) {
     let page
     try { page = new URL(pageUrl) } catch { return json({ error: 'Invalid url' }, 400) }
 
-    const host = page.hostname
+    const host = page.hostname.replace(/^www\./, '')
     const pagePath = page.pathname + page.search || '/'
     const vid = visitorId(request)
     const kv = env.BUSUANZI
@@ -157,13 +157,14 @@ async function handleCount(request, env) {
     return new Response('Missing search parameter', { status: 400 })
   }
 
+  const normalized = domain.replace(/^www\./, '')
   const kv = env.BUSUANZI
   const now = today()
 
   const [sRaw, tRaw, metaRaw] = await Promise.all([
-    kv.get(`s:${domain}`),
-    kv.get(`t:${domain}:${now}`),
-    kv.get(`meta:${domain}`),
+    kv.get(`s:${normalized}`),
+    kv.get(`t:${normalized}:${now}`),
+    kv.get(`meta:${normalized}`),
   ])
 
   let s = sRaw ? JSON.parse(sRaw) : { pv: 0, uv: 0 }
@@ -174,10 +175,10 @@ async function handleCount(request, env) {
 
   if (!meta.createdAt) {
     meta = { createdAt: new Date().toISOString() }
-    await kv.put(`meta:${domain}`, JSON.stringify(meta)).catch(() => {})
+    await kv.put(`meta:${normalized}`, JSON.stringify(meta)).catch(() => {})
   }
 
-  const html = countPage(domain, {
+  const html = countPage(normalized, {
     sitePv: s.pv,
     siteUv: s.uv,
     todayPv: td.pv,
