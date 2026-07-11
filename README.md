@@ -6,7 +6,7 @@
 
 <div align="center">
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/busuanzi-worker)
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Brandon-LIs/bsz-cfworker)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
@@ -76,7 +76,7 @@
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/yourname/busuanzi-worker.git
+git clone https://github.com/Brandon-LIs/bsz-cfworker.git
 cd busuanzi-worker
 
 # 2. 安装依赖

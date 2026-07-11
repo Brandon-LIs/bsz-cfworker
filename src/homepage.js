@@ -208,7 +208,7 @@ npx wrangler deploy</pre>
 
   <footer>
     <p>&#x1F9C4; 不蒜子 &middot; 基于 Cloudflare Workers 构建</p>
-    <p><a href="https://github.com/yourname/busuanzi-worker">GitHub</a></p>
+    <p><a href="https://github.com/Brandon-LIs/bsz-cfworker">GitHub</a></p>
   </footer>
 </div>
 
