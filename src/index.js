@@ -216,10 +216,12 @@ async function handleCount(request, env) {
 }
 
 async function handleBadge(request, env) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="85" height="25" viewBox="0 0 85 25">
-  <rect width="85" height="25" rx="4" fill="#10b981"/>
-  <text x="6" y="16" fill="#fff" font-size="11" font-family="sans-serif" font-weight="600">&#x4E0D;&#x849C;&#x5B50;</text>
-  <text x="78" y="16" text-anchor="end" fill="#fff" font-size="9" font-family="sans-serif" opacity=".7">v1</text>
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="85" height="20" viewBox="0 0 85 20">
+  <rect width="22" height="20" rx="3" fill="#059669"/>
+  <rect x="22" width="63" height="20" rx="3" fill="#10b981"/>
+  <rect x="22" width="3" height="20" fill="#10b981"/>
+  <text x="11" y="14" text-anchor="middle" fill="#fff" font-size="13" font-family="sans-serif">&#x2261;</text>
+  <text x="53" y="14" text-anchor="middle" fill="#fff" font-size="11" font-family="sans-serif" font-weight="500">&#x4E0D;&#x849C;&#x5B50;</text>
 </svg>`
 
   return new Response(svg, {
