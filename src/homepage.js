@@ -132,7 +132,7 @@ const HOMEPAGE_HTML = `<!DOCTYPE html>
     <h2>快速开始</h2>
     <h3>1. 引入脚本</h3>
     <p>在网站 <code>&lt;head&gt;</code> 或 <code>&lt;body&gt;</code> 末尾添加：</p>
-    <pre><span class="tag">&lt;script </span><span class="attr">src=</span><span class="str">"https://busuanzi.cloud-drive-zc.workers.dev/busuanzi.min.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+    <pre><span class="tag">&lt;script </span><span class="attr">src=</span><span class="str">"https://bsz.oopss.top/busuanzi.min.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
     <h3>2. 放置标签</h3>
     <p>在需要显示计数的地方放置以下任意 span：</p>
     <pre><span class="cmt">&lt;!-- 站点统计 --&gt;</span>

@@ -50,7 +50,7 @@
 在你的网页中引入脚本和标签即可：
 
 ```html
-<script src="https://你的worker域名.workers.dev/busuanzi.min.js" defer></script>
+<script src="https://bsz.oopss.top/busuanzi.min.js" defer></script>
 
 本站总访问量 <span id="busuanzi_site_pv">加载中...</span> 次
 本站总访客数 <span id="busuanzi_site_uv">加载中...</span> 人
