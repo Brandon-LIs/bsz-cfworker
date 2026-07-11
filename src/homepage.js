@@ -154,7 +154,7 @@ const HOMEPAGE_HTML = `<!DOCTYPE html>
     <h2>自行部署</h2>
     <p>如果你想部署自己的实例，只需几步：</p>
     <pre><span class="cmt"># 1. 克隆仓库</span>
-git clone https://github.com/yourname/busuanzi-worker
+git clone https://github.com/Brandon-LIs/bsz-cfworker
 <span class="kw">cd</span> busuanzi-worker
 
 <span class="cmt"># 2. 创建 KV namespace</span>
