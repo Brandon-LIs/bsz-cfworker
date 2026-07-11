@@ -1,4 +1,5 @@
 import HOMEPAGE_HTML from './homepage.js'
+import countPage from './countpage.js'
 
 const CLIENT_JS = `(()=>{if(window.busuanziRequestSent)return;window.busuanziRequestSent=true;const u=new URL(document.currentScript.src);fetch(u.protocol+'//'+u.host+'/api',{method:'POST',body:JSON.stringify({url:location.href,referrer:document.referrer})}).then(r=>r.json()).then(r=>{for(const k in r)document.querySelectorAll('#'+k).forEach(e=>e.innerText=r[k])}).catch(e=>console.error('busuanzi error:',e))})();`
 
@@ -66,6 +67,16 @@ export default {
       })
     }
 
+    // Site statistics page
+    if (method === 'GET' && (path === '/count' || path === '/count.php')) {
+      return handleCount(request, env)
+    }
+
+    // Badge icon (SVG)
+    if (method === 'GET' && path === '/badge') {
+      return handleBadge(request, env)
+    }
+
     return json({ error: 'Not found' }, 404)
   },
 }
@@ -101,6 +112,7 @@ async function handleApi(request, env) {
       uvSite: `uvs:${host}:${vid}`,
       uvPage: `uvp:${host}:${pagePath}:${vid}`,
       uvToday: `uvt:${host}:${now}:${vid}`,
+      meta: `meta:${host}`,
     }
 
     const [
@@ -108,6 +120,7 @@ async function handleApi(request, env) {
       pagePvRaw, pageUvRaw,
       todayPvRaw, todayUvRaw,
       uvSiteRaw, uvPageRaw, uvTodayRaw,
+      metaRaw,
     ] = await Promise.all([
       kv.get(keys.sitePv),
       kv.get(keys.siteUv),
@@ -151,6 +164,7 @@ async function handleApi(request, env) {
     if (isNewSite) writes.push(kv.put(keys.uvSite, '1'))
     if (isNewPage) writes.push(kv.put(keys.uvPage, '1'))
     if (isNewToday) writes.push(kv.put(keys.uvToday, '1', { expirationTtl: 172800 }))
+    if (metaRaw === null) writes.push(kv.put(keys.meta, JSON.stringify({ createdAt: new Date().toISOString() })))
 
     await Promise.all(writes)
 
@@ -165,4 +179,50 @@ async function handleApi(request, env) {
   } catch (e) {
     return json({ error: 'Internal error' }, 500)
   }
+}
+
+async function handleCount(request, env) {
+  const url = new URL(request.url)
+  const domain = url.searchParams.get('search')
+  if (!domain) {
+    return new Response('Missing search parameter', { status: 400 })
+  }
+
+  const kv = env.BUSUANZI
+  const now = today()
+
+  const [sitePvRaw, siteUvRaw, todayPvRaw, todayUvRaw, metaRaw] = await Promise.all([
+    kv.get(`spv:${domain}`),
+    kv.get(`suv:${domain}`),
+    kv.get(`tpv:${domain}:${now}`),
+    kv.get(`tuv:${domain}:${now}`),
+    kv.get(`meta:${domain}`),
+  ])
+
+  let meta = { createdAt: '-' }
+  try { if (metaRaw) meta = JSON.parse(metaRaw) } catch {}
+
+  const html = countPage(domain, {
+    sitePv: Number(sitePvRaw) || 0,
+    siteUv: Number(siteUvRaw) || 0,
+    todayPv: Number(todayPvRaw) || 0,
+    todayUv: Number(todayUvRaw) || 0,
+    createdAt: meta.createdAt === '-' ? '-' : new Date(meta.createdAt).toLocaleString('zh-CN'),
+  })
+
+  return new Response(html, {
+    headers: { 'Content-Type': 'text/html;charset=utf-8' },
+  })
+}
+
+async function handleBadge(request, env) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="85" height="25" viewBox="0 0 85 25">
+  <rect width="85" height="25" rx="4" fill="#10b981"/>
+  <text x="6" y="16" fill="#fff" font-size="11" font-family="sans-serif" font-weight="600">&#x4E0D;&#x849C;&#x5B50;</text>
+  <text x="78" y="16" text-anchor="end" fill="#fff" font-size="9" font-family="sans-serif" opacity=".7">v1</text>
+</svg>`
+
+  return new Response(svg, {
+    headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=3600' },
+  })
 }

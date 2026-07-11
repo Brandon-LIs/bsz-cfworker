@@ -208,7 +208,11 @@ npx wrangler deploy</pre>
 
   <footer>
     <p>&#x1F9C4; 不蒜子 &middot; 基于 Cloudflare Workers 构建</p>
-    <p><a href="https://github.com/Brandon-LIs/bsz-cfworker">GitHub</a></p>
+    <p>
+      <a href="https://bsz.oopss.top/count?search=bsz.oopss.top">站点统计</a>
+      &middot;
+      <a href="https://github.com/Brandon-LIs/bsz-cfworker">GitHub</a>
+    </p>
   </footer>
 </div>
 
