@@ -199,8 +199,13 @@ async function handleCount(request, env) {
     kv.get(`meta:${domain}`),
   ])
 
-  let meta = { createdAt: '-' }
+  let meta = { createdAt: null }
   try { if (metaRaw) meta = JSON.parse(metaRaw) } catch {}
+
+  if (!meta.createdAt) {
+    meta = { createdAt: new Date().toISOString() }
+    await kv.put(`meta:${domain}`, JSON.stringify(meta)).catch(() => {})
+  }
 
   const html = countPage(domain, {
     sitePv: Number(sitePvRaw) || 0,
