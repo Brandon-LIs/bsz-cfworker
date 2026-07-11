@@ -4,8 +4,7 @@ compatibility_date = "2025-04-01"
 workers_dev = true
 
 routes = [
-  { pattern = "bsz.oopss.top", custom_domain = true },
-  { pattern = "ac.oopss.top", custom_domain = true }
+  { pattern = "bsz.oopss.top", custom_domain = true }
 ]
 
 [[kv_namespaces]]

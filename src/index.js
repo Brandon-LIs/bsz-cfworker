@@ -152,11 +152,23 @@ async function handleApi(request, env, ctx) {
   }
 }
 
+const PLACEHOLDER_HTML = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>提示 - 不蒜子</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f9fafb;color:#1f2937;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:20px;line-height:1.7}.card{background:#fff;border-radius:16px;padding:40px;max-width:560px;box-shadow:0 1px 3px rgba(0,0,0,.06);text-align:center}h1{font-size:2rem;font-weight:800;margin-bottom:8px}h1 span{color:#10b981}p{color:#4b5563;margin-bottom:12px}code{background:#f3f4f6;padding:2px 8px;border-radius:4px;font-size:.9rem;word-break:break-all}.tip{background:#d1fae5;border-radius:10px;padding:16px;margin-top:16px;font-size:.9rem;text-align:left}</style></head><body><div class="card"><h1>&#x1F9C4; <span>不蒜子</span></h1><p>管理员未配置网站域名，请联系网站管理员。</p><div class="tip"><strong>&#x1F4CD; 如果您是网站管理员：</strong><p>请将统计徽章网页代码中的 <code>你的域名</code> 改成你的域名，不要包含 <code>http://</code> 或 <code>https://</code>。</p><p style="margin-top:8px;">例如：<br><code>https://ac.oopss.top/count?search=example.com</code></p></div></div></body></html>`
+
 async function handleCount(request, env) {
   const url = new URL(request.url)
   const domain = url.searchParams.get('search')
   if (!domain) {
-    return new Response('Missing search parameter', { status: 400 })
+    return new Response(PLACEHOLDER_HTML, {
+      status: 200,
+      headers: { 'Content-Type': 'text/html;charset=utf-8' },
+    })
+  }
+
+  if (/你的域名|yourdomain/.test(domain)) {
+    return new Response(PLACEHOLDER_HTML, {
+      status: 200,
+      headers: { 'Content-Type': 'text/html;charset=utf-8' },
+    })
   }
 
   const normalized = DOMAIN_ALIASES[domain.replace(/^www\./, '')] || domain.replace(/^www\./, '')
