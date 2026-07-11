@@ -1,0 +1,7 @@
+name = "busuanzi"
+main = "src/index.js"
+compatibility_date = "2025-04-01"
+
+[[kv_namespaces]]
+binding = "BUSUANZI"
+id = "1ff40dc8c4d545f2b593f686911ce369"

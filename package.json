@@ -1,0 +1,13 @@
+{
+  "name": "busuanzi-worker",
+  "version": "1.0.0",
+  "description": "不蒜子 - 轻量极简网站访问统计 Cloudflare Worker",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
