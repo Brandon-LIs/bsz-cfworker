@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🧄 不蒜子 · busuanzi-worker</h1>
+  <h1>🧄 自建不蒜子 · open-busuanzi</h1>
   <p>轻量极简的网站访问量统计 · Cloudflare Workers 版</p>
   <p>两行代码搞定计数 · 永久免费 · 全球加速</p>
 </div>
